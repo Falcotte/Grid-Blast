@@ -30,6 +30,8 @@ namespace GridBlast.GridSystem
             CreateGrid();
         }
 
+        #region Grid
+
         public void CreateGrid()
         {
             CheckGridSize();
@@ -53,6 +55,8 @@ namespace GridBlast.GridSystem
                     grid[x, y] = node;
                 }
             }
+
+            SetNodeNeighbours();
         }
 
         public void ResetGrid()
@@ -98,6 +102,40 @@ namespace GridBlast.GridSystem
                 nodeSize = playSpaceSize.y / gridSize;
             }
         }
+
+        #endregion
+
+        #region Node
+
+        private void SetNodeNeighbours()
+        {
+            for(int x = 0; x < gridSize; x++)
+            {
+                for(int y = 0; y < gridSize; y++)
+                {
+                    Node node = grid[x, y];
+
+                    if(x > 0)
+                    {
+                        node.AddNeighbour(grid[x - 1, y]);
+                    }
+                    if(x < gridSize - 1)
+                    {
+                        node.AddNeighbour(grid[x + 1, y]);
+                    }
+                    if(y > 0)
+                    {
+                        node.AddNeighbour(grid[x, y - 1]);
+                    }
+                    if(y < gridSize - 1)
+                    {
+                        node.AddNeighbour(grid[x, y + 1]);
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }
 

@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87a6ea32e8f9cd74e91d11e6f7340f1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  neighbours: []
   icon: {fileID: 1111542232957986853}
   clickAnimationScaleAmount: 0.2
   clickAnimationDuration: 0.25
