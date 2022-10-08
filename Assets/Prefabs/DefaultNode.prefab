@@ -209,3 +209,5 @@ MonoBehaviour:
   icon: {fileID: 1111542232957986853}
   clickAnimationScaleAmount: 0.2
   clickAnimationDuration: 0.25
+  collectAnimationScaleAmount: 0.2
+  collectAnimationDuration: 0.25
