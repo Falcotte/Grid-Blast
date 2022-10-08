@@ -1,12 +1,22 @@
 using UnityEngine;
 
-namespace GridBlast.Grid
+namespace GridBlast.GridSystem
 {
     public class Grid : MonoBehaviour
     {
         [SerializeField] private Node nodePrefab;
 
         [SerializeField] private int gridSize;
+        public int GridSize
+        {
+            get { return gridSize; }
+            set
+            {
+                gridSize = value;
+                CheckGridSize();
+            }
+        }
+
         private Node[,] grid;
 
         [SerializeField] private float padding;
@@ -34,7 +44,7 @@ namespace GridBlast.Grid
                 {
                     Node node = Instantiate(nodePrefab, transform);
 
-                    node.transform.localPosition = new Vector3(-(nodeSize / 2f) * (gridSize - 1) + nodeSize * x, playSpaceSize.y / 2f - nodeSize * (gridSize - .5f - y), 0f);
+                    node.transform.localPosition = new Vector3(-(nodeSize / 2f) * (gridSize - 1) + nodeSize * x, playSpaceSize.y * .75f - nodeSize * (gridSize - .5f - y), 0f);
                     node.transform.localScale = Vector2.one * (nodeSize - padding);
 
                     node.name = $"Node[{x},{y}]";
@@ -42,6 +52,19 @@ namespace GridBlast.Grid
                     grid[x, y] = node;
                 }
             }
+        }
+
+        public void ResetGrid()
+        {
+            for(int x = 0; x < grid.GetLength(0); x++)
+            {
+                for(int y = 0; y < grid.GetLength(1); y++)
+                {
+                    Destroy(grid[x, y].gameObject);
+                }
+            }
+
+            CreateGrid();
         }
 
         private void CheckGridSize()
@@ -55,15 +78,17 @@ namespace GridBlast.Grid
 
         private void SetPlaySpaceSize()
         {
-            float playSpaceHeight = Camera.main.orthographicSize * 2f;
-            float playSpaceWidth = playSpaceHeight * Camera.main.aspect;
+            // Lower quarter of screen space is reserved for UI
+            float playSpaceHeight = Camera.main.orthographicSize * 4f / 3f;
+            float playSpaceWidth = Camera.main.orthographicSize * 2f * Camera.main.aspect;
 
             playSpaceSize = new Vector2(playSpaceWidth - padding, playSpaceHeight - padding);
         }
 
         private void SetNodeSize()
         {
-            if(Camera.main.aspect <= 1)
+            // Lower quarter of screen space is reserved for UI
+            if(Camera.main.aspect <= .75f)
             {
                 nodeSize = playSpaceSize.x / gridSize;
             }

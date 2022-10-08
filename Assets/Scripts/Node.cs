@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GridBlast.Grid
+namespace GridBlast.GridSystem
 {
     public class Node : MonoBehaviour
     {
