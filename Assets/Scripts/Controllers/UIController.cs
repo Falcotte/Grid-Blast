@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-namespace GridBlast.UI
+namespace GridBlast.UISystem
 {
     public class UIController : MonoBehaviour
     {

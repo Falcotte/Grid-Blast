@@ -1,4 +1,5 @@
 using UnityEngine;
+using GridBlast.GridSystem.Nodes;
 
 namespace GridBlast.GridSystem
 {
