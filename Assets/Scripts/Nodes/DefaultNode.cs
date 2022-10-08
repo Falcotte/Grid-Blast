@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using GridBlast.InputSystem;
 
 namespace GridBlast.GridSystem.Nodes
 {
     public class DefaultNode : Node, IClickable, ICollectable
     {
         [SerializeField] private SpriteRenderer icon;
+
+        [SerializeField] private int minCollectionAmount;
 
         [SerializeField] private float clickAnimationScaleAmount;
         [SerializeField] private float clickAnimationDuration;
@@ -34,6 +37,7 @@ namespace GridBlast.GridSystem.Nodes
                 return;
 
             Clicked = true;
+            InputController.Instance.enabled = false;
 
             icon.enabled = true;
             icon.transform.localScale = Vector3.zero;
@@ -50,8 +54,10 @@ namespace GridBlast.GridSystem.Nodes
                 List<Node> clickedNodes = GetClickedNeighbours();
                 clickedNodes.Add(this);
 
-                if(clickedNodes.Count >= 3)
+                if(clickedNodes.Count >= minCollectionAmount)
                 {
+                    Debug.Log($"{clickedNodes.Count} nodes collected");
+
                     foreach(var node in clickedNodes)
                     {
                         if(node.TryGetComponent(out ICollectable collectable))
@@ -59,6 +65,10 @@ namespace GridBlast.GridSystem.Nodes
                             collectable.Collect();
                         }
                     }
+                }
+                else
+                {
+                    InputController.Instance.enabled = true;
                 }
             });
         }
@@ -74,6 +84,13 @@ namespace GridBlast.GridSystem.Nodes
             });
             collectionSequence.Append(transform.DOPunchScale(Vector3.one * collectAnimationScaleAmount, collectAnimationDuration, 1, 1));
             collectionSequence.Join(icon.transform.DOScale(0f, collectAnimationDuration));
+            collectionSequence.AppendCallback(() =>
+            {
+                if(!InputController.Instance.enabled)
+                {
+                    InputController.Instance.enabled = true;
+                }
+            });
         }
     }
 }
