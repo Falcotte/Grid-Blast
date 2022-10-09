@@ -1,12 +1,11 @@
 using UnityEngine;
+using Zenject;
 using GridBlast.GridSystem.Nodes;
 
 namespace GridBlast.GridSystem
 {
     public class Grid : MonoBehaviour
     {
-        [SerializeField] private Node nodePrefab;
-
         [SerializeField] private int gridSize;
         public int GridSize
         {
@@ -24,6 +23,8 @@ namespace GridBlast.GridSystem
 
         private Vector2 playSpaceSize;
         private float nodeSize;
+
+        [Inject] private DefaultNode.Factory defaultNodeFactory;
 
         private void Start()
         {
@@ -45,8 +46,8 @@ namespace GridBlast.GridSystem
             {
                 for(int y = 0; y < gridSize; y++)
                 {
-                    Node node = Instantiate(nodePrefab, transform);
-
+                    Node node = defaultNodeFactory.Create();
+                    node.transform.SetParent(transform);
                     node.transform.localPosition = new Vector3(-(nodeSize / 2f) * (gridSize - 1) + nodeSize * x, playSpaceSize.y * .75f - nodeSize * (gridSize - .5f - y), 0f);
                     node.transform.localScale = Vector2.one * (nodeSize - padding);
 

@@ -3,7 +3,7 @@ using GridBlast.GridSystem.Nodes;
 
 namespace GridBlast.InputSystem
 {
-    public class InputController : MonoSingleton<InputController>
+    public class InputController : MonoBehaviour
     {
         private void Update()
         {

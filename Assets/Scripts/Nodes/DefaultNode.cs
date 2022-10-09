@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Zenject;
 using GridBlast.InputSystem;
 
 namespace GridBlast.GridSystem.Nodes
@@ -23,6 +24,14 @@ namespace GridBlast.GridSystem.Nodes
         private Vector3 defaultScale;
         private Vector3 defaultIconScale;
 
+        private InputController inputController;
+
+        [Inject]
+        public void Construct(InputController inputController)
+        {
+            this.inputController = inputController;
+        }
+
         private void Start()
         {
             defaultScale = transform.localScale;
@@ -37,7 +46,7 @@ namespace GridBlast.GridSystem.Nodes
                 return;
 
             Clicked = true;
-            InputController.Instance.enabled = false;
+            inputController.enabled = false;
 
             icon.enabled = true;
             icon.transform.localScale = Vector3.zero;
@@ -68,7 +77,7 @@ namespace GridBlast.GridSystem.Nodes
                 }
                 else
                 {
-                    InputController.Instance.enabled = true;
+                    inputController.enabled = true;
                 }
             });
         }
@@ -86,11 +95,16 @@ namespace GridBlast.GridSystem.Nodes
             collectionSequence.Join(icon.transform.DOScale(0f, collectAnimationDuration));
             collectionSequence.AppendCallback(() =>
             {
-                if(!InputController.Instance.enabled)
+                if(!inputController.enabled)
                 {
-                    InputController.Instance.enabled = true;
+                    inputController.enabled = true;
                 }
             });
+        }
+
+        public class Factory : PlaceholderFactory<DefaultNode>
+        {
+
         }
     }
 }

@@ -209,6 +209,6 @@ MonoBehaviour:
   icon: {fileID: 1111542232957986853}
   minCollectionAmount: 3
   clickAnimationScaleAmount: 0.2
-  clickAnimationDuration: 0.25
+  clickAnimationDuration: 0.12
   collectAnimationScaleAmount: 0.2
-  collectAnimationDuration: 0.25
+  collectAnimationDuration: 0.12
